@@ -1,0 +1,10 @@
+{
+  "description": "A web application that helps users complete and manage tasks efficiently, keeping essential information and tools organized in one place.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
