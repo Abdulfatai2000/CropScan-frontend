@@ -18,9 +18,10 @@ export interface UploadedPhoto {
 
 export interface DiseaseGuidance {
   description: string;
-  symptoms: string[];
-  treatment: string[];
-  prevention: string[];
+  symptoms?: string[];
+  treatment?: string[];
+  prevention?: string[];
+  recommendations?: string[];
 }
 
 export interface AssessmentResult {
