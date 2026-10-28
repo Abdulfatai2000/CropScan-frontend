@@ -38,13 +38,14 @@ export default function GuidePage() {
       </div>
 
       <div className="guide-grid">
-        {SUPPORTED_CROPS.map((crop) => (
+        {SUPPORTED_CROPS.map((crop, index) => (
           <article className="guide-card" key={crop.name} id={crop.name.toLowerCase().replace(/\s+/g, '-')}>
             <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 190 }}>
               <Image
                 src={crop.image}
                 alt={`${crop.name} plant`}
                 fill
+                priority={index === 0}
                 sizes="(max-width: 560px) 115px, 180px"
                 style={{ objectFit: 'cover', objectPosition: crop.position || 'center' }}
               />
