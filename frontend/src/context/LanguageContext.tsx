@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type Language = 'English' | 'Yoruba';
 
@@ -110,18 +110,18 @@ const LanguageContext = createContext<LanguageContextType>({
 const STORAGE_KEY = 'cropscan_preferred_language';
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('English');
-
-  useEffect(() => {
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window === 'undefined') return 'English';
     try {
       const saved = localStorage.getItem(STORAGE_KEY) as Language | null;
       if (saved && (saved === 'English' || saved === 'Yoruba')) {
-        setLanguageState(saved);
+        return saved;
       }
     } catch {
-      // Ignore localStorage availability issues in private browsing
+      // Ignore localStorage availability issues
     }
-  }, []);
+    return 'English';
+  });
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);

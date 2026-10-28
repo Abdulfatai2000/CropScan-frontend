@@ -22,23 +22,18 @@ function ScanWizardContent() {
 
   const [step, setStep] = useState<number>(1);
   const [photo, setPhoto] = useState<UploadedPhoto | null>(null);
-  const [crop, setCrop] = useState<Crop | ''>('');
+  const [crop, setCrop] = useState<Crop | ''>(() => {
+    const initialCrop = searchParams.get('crop');
+    if (initialCrop) {
+      const validCrops: Crop[] = ['Tomato', 'Maize', 'Bell pepper', 'Citrus', 'Potato'];
+      return validCrops.find((c) => c.toLowerCase() === initialCrop.toLowerCase()) || '';
+    }
+    return '';
+  });
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [outcome, setOutcome] = useState<ResultOutcome | null>(null);
   const [demoMode, setDemoMode] = useState<ResultOutcome>('confident');
   const [result, setResult] = useState<AssessmentResult | null>(null);
-
-  // Read initial crop query parameter if navigated from Dashboard or Guide
-  useEffect(() => {
-    const initialCrop = searchParams.get('crop');
-    if (initialCrop) {
-      const validCrops: Crop[] = ['Tomato', 'Maize', 'Bell pepper', 'Citrus', 'Potato'];
-      const matched = validCrops.find((c) => c.toLowerCase() === initialCrop.toLowerCase());
-      if (matched) {
-        setCrop(matched);
-      }
-    }
-  }, [searchParams]);
 
   // Clean up object URL when component unmounts
   useEffect(() => {
