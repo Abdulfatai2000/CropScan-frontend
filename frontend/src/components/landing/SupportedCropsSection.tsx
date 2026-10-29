@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SUPPORTED_CROPS } from '@/types/crops';
+import { Icon } from '@/components/common/Icon';
 import { useLanguage } from '@/context/LanguageContext';
 
 export function SupportedCropsSection() {
@@ -31,15 +32,20 @@ export function SupportedCropsSection() {
                 src={crop.image}
                 alt={`${crop.name} foliage specimen`}
                 fill
-                sizes="(max-width: 800px) 50vw, (max-width: 1100px) 20vw, 250px"
+                sizes="(max-width: 800px) 50vw, (max-width: 1100px) 20vw, 320px"
                 style={{
                   objectFit: 'cover',
                   objectPosition: crop.position || 'center',
                 }}
               />
-              <div>
-                <small>{crop.eyebrow}</small>
-                <h3>{language === 'Yoruba' ? crop.yorubaName : crop.name}</h3>
+              <div className="crop-card-content">
+                <div className="crop-card-text">
+                  <small>{crop.eyebrow}</small>
+                  <h3>{language === 'Yoruba' ? crop.yorubaName : crop.name}</h3>
+                </div>
+                <span className="crop-card-arrow" aria-hidden="true">
+                  <Icon name="arrow" size={18} />
+                </span>
               </div>
             </Link>
           ))}

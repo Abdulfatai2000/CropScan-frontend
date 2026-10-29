@@ -72,18 +72,27 @@ export default function DashboardPage() {
                 key={crop.name}
                 href={`/scan?crop=${encodeURIComponent(crop.name)}`}
                 title={`Start scan for ${crop.name}`}
+                className="compact-crop-card"
               >
-                <div style={{ position: 'relative', width: '100%', height: 74 }}>
+                <div className="compact-crop-img">
                   <Image
                     src={crop.image}
                     alt={crop.name}
                     fill
-                    sizes="110px"
-                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 860px) 160px, 240px"
+                    style={{ objectFit: 'cover', objectPosition: crop.position || 'center' }}
                   />
+                  <span className="compact-crop-tag">{crop.eyebrow}</span>
                 </div>
-                <span>{isYo ? crop.yorubaName : crop.name}</span>
-                <Icon name="arrow" size={16} />
+                <div className="compact-crop-footer">
+                  <div className="compact-crop-text">
+                    <strong className="compact-crop-name">{isYo ? crop.yorubaName : crop.name}</strong>
+                    <span className="compact-crop-sub">{isYo ? crop.name : crop.scientificName}</span>
+                  </div>
+                  <span className="compact-crop-arrow" aria-hidden="true">
+                    <Icon name="arrow" size={16} />
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
