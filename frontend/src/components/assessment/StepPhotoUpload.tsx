@@ -4,6 +4,7 @@ import React, { useRef, useState, ChangeEvent, DragEvent } from 'react';
 import { Button } from '@/components/common/Button';
 import { Icon } from '@/components/common/Icon';
 import { UploadedPhoto } from '@/types/assessment';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface StepPhotoUploadProps {
   photo: UploadedPhoto | null;
@@ -21,6 +22,9 @@ export function StepPhotoUpload({
   onPhotoRemoved,
   onContinue,
 }: StepPhotoUploadProps) {
+  const { language } = useLanguage();
+  const isYo = language === 'Yoruba';
+
   const [error, setError] = useState<string>('');
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -28,12 +32,20 @@ export function StepPhotoUpload({
 
   const processFile = (file: File) => {
     if (!ACCEPTED_TYPES.includes(file.type)) {
-      setError('Please choose a valid JPG, PNG, or WebP image.');
+      setError(
+        isYo
+          ? 'Jọ̀wọ́ yan àwòrán JPG, PNG, tàbí WebP tó tọ́.'
+          : 'Please choose a valid JPG, PNG, or WebP image.'
+      );
       return;
     }
 
     if (file.size > MAX_SIZE_BYTES) {
-      setError('This image exceeds 10 MB. Please choose a compressed or smaller file.');
+      setError(
+        isYo
+          ? 'Àwòrán yìí ju 10 MB lọ. Jọ̀wọ́ yan àwòrán tí ó kéré sí i.'
+          : 'This image exceeds 10 MB. Please choose a compressed or smaller file.'
+      );
       return;
     }
 
@@ -75,9 +87,13 @@ export function StepPhotoUpload({
   return (
     <section className="assessment-card upload-card" aria-labelledby="step1-title">
       <div className="card-title">
-        <span>Step 1 of 4</span>
-        <h2 id="step1-title">Add a leaf photo</h2>
-        <p>Use one leaf and make sure its surface and symptoms are clearly visible.</p>
+        <span>{isYo ? 'Ìgbésẹ̀ 1 nínú 4' : 'Step 1 of 4'}</span>
+        <h2 id="step1-title">{isYo ? 'Fi àwòrán ewé kún un' : 'Add a leaf photo'}</h2>
+        <p>
+          {isYo
+            ? 'Lo ewé kan ṣoṣo kí o sì rí i dájú pé àwọn àmì àrùn hàn kedere.'
+            : 'Use one leaf and make sure its surface and symptoms are clearly visible.'}
+        </p>
       </div>
 
       <input
@@ -118,25 +134,29 @@ export function StepPhotoUpload({
           <span className="upload-icon">
             <Icon name="upload" size={29} />
           </span>
-          <h3>Upload a clear photo of a plant leaf</h3>
-          <p>Drag and drop a photo here, or choose one from your device.</p>
+          <h3>{isYo ? 'Gbé àwòrán ewé tó mọ́lẹ̀ kedere wọlé' : 'Upload a clear photo of a plant leaf'}</h3>
+          <p>
+            {isYo
+              ? 'Wọ́ àwòrán wá síbí, tàbí yàn láti orí ẹ̀rọ rẹ.'
+              : 'Drag and drop a photo here, or choose one from your device.'}
+          </p>
           <div className="upload-actions" onClick={(e) => e.stopPropagation()}>
             <Button
               variant="primary"
               icon="image"
               onClick={() => fileInputRef.current?.click()}
             >
-              Choose Photo
+              {isYo ? 'Yan Àwòrán' : 'Choose Photo'}
             </Button>
             <Button
               variant="outline"
               icon="camera"
               onClick={() => cameraInputRef.current?.click()}
             >
-              Take Photo
+              {isYo ? 'Ya Àwòrán' : 'Take Photo'}
             </Button>
           </div>
-          <small>JPG, PNG or WebP · Maximum 10 MB</small>
+          <small>{isYo ? 'JPG, PNG tàbí WebP · Ó pọ̀ jùlọ 10 MB' : 'JPG, PNG or WebP · Maximum 10 MB'}</small>
         </div>
       ) : (
         <div className="preview-panel">
@@ -144,7 +164,7 @@ export function StepPhotoUpload({
           <img src={photo.previewUrl} alt="Selected leaf preview" />
           <div className="preview-details">
             <span className="success-badge">
-              <Icon name="check" size={15} /> Photo added
+              <Icon name="check" size={15} /> {isYo ? 'A ti fi àwòrán kún un' : 'Photo added'}
             </span>
             <h3>{photo.name}</h3>
             <p>
@@ -156,16 +176,20 @@ export function StepPhotoUpload({
                 icon="refresh"
                 onClick={() => fileInputRef.current?.click()}
               >
-                Change Photo
+                {isYo ? 'Yí Àwòrán Padà' : 'Change Photo'}
               </Button>
               <Button variant="ghost" icon="trash" onClick={onPhotoRemoved}>
-                Remove
+                {isYo ? 'Yọ Kúrò' : 'Remove'}
               </Button>
             </div>
           </div>
           <div className="preview-check">
-            <strong>Before continuing</strong>
-            <p>Can you clearly see the whole leaf and the affected symptomatic area?</p>
+            <strong>{isYo ? 'Kí o tó tẹ̀síwájú' : 'Before continuing'}</strong>
+            <p>
+              {isYo
+                ? 'Ǹjẹ́ o lè rí gbogbo ewé náà àti àwọn àmì àìsàn náà kedere?'
+                : 'Can you clearly see the whole leaf and the affected symptomatic area?'}
+            </p>
           </div>
         </div>
       )}
@@ -177,21 +201,21 @@ export function StepPhotoUpload({
       )}
 
       <div className="photo-tips">
-        <strong>For a better photo</strong>
+        <strong>{isYo ? 'Fún àwòrán tó dára jù' : 'For a better photo'}</strong>
         <span>
-          <Icon name="check" size={14} /> Use even daylight
+          <Icon name="check" size={14} /> {isYo ? 'Lo ìmọ́lẹ̀ oòrùn tó mọ́' : 'Use even daylight'}
         </span>
         <span>
-          <Icon name="check" size={14} /> Hold the camera steady
+          <Icon name="check" size={14} /> {isYo ? 'Mú kámẹ́rà dúró dáadáa' : 'Hold the camera steady'}
         </span>
         <span>
-          <Icon name="check" size={14} /> Fill the frame with the leaf
+          <Icon name="check" size={14} /> {isYo ? 'Jẹ́ kí ewé náà kún ojú àwòrán' : 'Fill the frame with the leaf'}
         </span>
       </div>
 
       <div className="card-actions right">
         <Button disabled={!photo} onClick={onContinue}>
-          Continue to Crop
+          {isYo ? 'Tẹ̀síwájú sí Yíyan Irúgbìn' : 'Continue to Crop'}
         </Button>
       </div>
     </section>
