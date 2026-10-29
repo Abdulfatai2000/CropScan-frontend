@@ -24,6 +24,7 @@ export function StepCropSelect({
 }: StepCropSelectProps) {
   const [search, setSearch] = useState('');
   const { language, setLanguage } = useLanguage();
+  const isYo = language === 'Yoruba';
 
   const filteredCrops = SUPPORTED_CROPS.filter(
     (item) =>
@@ -37,9 +38,13 @@ export function StepCropSelect({
   return (
     <section className="assessment-card crop-select-card" aria-labelledby="step2-title">
       <div className="card-title">
-        <span>Step 2 of 4</span>
-        <h2 id="step2-title">Select the matching crop</h2>
-        <p>The crop you select must match the plant in your photo.</p>
+        <span>{isYo ? 'Ìgbésẹ̀ 2 nínú 4' : 'Step 2 of 4'}</span>
+        <h2 id="step2-title">{isYo ? 'Yan ohun ọ̀gbìn tó bá a mu' : 'Select the matching crop'}</h2>
+        <p>
+          {isYo
+            ? 'Ohun ọ̀gbìn tí o yàn gbọ́dọ̀ bá ohun tó wà nínú àwòrán rẹ mu.'
+            : 'The crop you select must match the plant in your photo.'}
+        </p>
       </div>
 
       <div className="form-layout">
@@ -47,23 +52,23 @@ export function StepCropSelect({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={photo.previewUrl} alt="Selected plant leaf" />
           <div>
-            <span>Selected photo</span>
+            <span>{isYo ? 'Àwòrán tí a yàn' : 'Selected photo'}</span>
             <strong>{photo.name}</strong>
             <button type="button" onClick={onBack}>
-              Change
+              {isYo ? 'Yí padà' : 'Change'}
             </button>
           </div>
         </div>
 
         <div className="fields">
           <label className="field">
-            <span>Search or choose a crop</span>
+            <span>{isYo ? 'Wá tàbí yan ohun ọ̀gbìn' : 'Search or choose a crop'}</span>
             <div className="search-field">
               <Icon name="search" size={18} />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="e.g. Tomato, Maize, Àgbàdo..."
+                placeholder={isYo ? 'f.a. Tòmátò, Àgbàdo, Ata...' : 'e.g. Tomato, Maize, Bell pepper...'}
                 aria-label="Filter crops"
               />
             </div>
@@ -73,9 +78,11 @@ export function StepCropSelect({
             <div className="unsupported-box" role="alert">
               <Icon name="alert" size={20} />
               <div>
-                <strong>Crop not supported yet</strong>
+                <strong>{isYo ? 'A kò tíì tìlẹ́yìn ohun ọ̀gbìn yìí' : 'Crop not supported yet'}</strong>
                 <p>
-                  CropScan AI currently supports Tomato, Maize, Bell pepper, Citrus, and Potato. Please do not select an incorrect crop for an unlisted plant.
+                  {isYo
+                    ? 'CropScan AI tìlẹ́yìn Tòmátò, Àgbàdo, Ata, Ọsàn, àti Pọtétò ní báyìí. Jọ̀wọ́ má ṣe yan ohun ọ̀gbìn tí kò bá a mu fún ewé tí kò sí nínú àkójọ.'
+                    : 'CropScan AI currently supports Tomato, Maize, Bell pepper, Citrus, and Potato. Please do not select an incorrect crop for an unlisted plant.'}
                 </p>
               </div>
             </div>
@@ -94,7 +101,7 @@ export function StepCropSelect({
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={item.image} alt={item.name} />
-                    <span>{language === 'Yoruba' ? item.yorubaName : item.name}</span>
+                    <span>{isYo ? item.yorubaName : item.name}</span>
                     <i>{isSelected && <Icon name="check" size={14} />}</i>
                   </button>
                 );
@@ -103,7 +110,7 @@ export function StepCropSelect({
           )}
 
           <label className="field">
-            <span>Guidance language</span>
+            <span>{isYo ? 'Èdè ìtọ́sọ́nà' : 'Guidance language'}</span>
             <div className="select-field">
               <Icon name="globe" size={18} />
               <select
@@ -116,17 +123,21 @@ export function StepCropSelect({
               </select>
               <Icon name="chevron" size={16} />
             </div>
-            <small>Available condition descriptions and prevention guidance will be shown in this language.</small>
+            <small>
+              {isYo
+                ? 'Àwọn àpèjúwe àrùn àti ìtọ́sọ́nà ìdènà yóò hàn ní èdè yìí.'
+                : 'Available condition descriptions and prevention guidance will be shown in this language.'}
+            </small>
           </label>
         </div>
       </div>
 
       <div className="card-actions between">
         <Button variant="ghost" onClick={onBack}>
-          Back
+          {isYo ? 'Padà' : 'Back'}
         </Button>
         <Button disabled={!selectedCrop} onClick={onContinue}>
-          Review Assessment
+          {isYo ? 'Ṣàyẹ̀wò Kí O Tó Ránṣẹ́' : 'Review Assessment'}
         </Button>
       </div>
     </section>
